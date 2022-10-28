@@ -1,6 +1,8 @@
 package com.gft.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -8,7 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -37,7 +41,98 @@ public class Participante implements Serializable {
 	private Grupo grupo;
 	
 	private boolean status;
+	
+	
+	private boolean[] marcar_presencas;
 
+	private boolean[] atividades_realizadas;
+
+	private boolean[] atrasos;
+	
+	@ManyToMany
+	private List<Atividade> atividades = new ArrayList<>();
+	
+	public int indiceDoArrayMarcarPresenca() {
+		Evento auxEvento = new Evento();
+
+		int i = (int) auxEvento.totalDiasDoEvento();
+
+		this.marcar_presencas = new boolean[i];
+
+		return this.marcar_presencas.length;
+
+	}
+	
+	public void arrayMarcarPresenca() {
+		Participante pontuacaoAux = new Participante();
+		
+		int i = pontuacaoAux.indiceDoArrayMarcarPresenca();
+		this.marcar_presencas = new boolean[i];
+	}
+
+	public int indiceDoArrayAtividadesRealizadas() {
+
+		Evento auxEvento = new Evento();
+
+		Atividade auxAtividade = new Atividade();
+
+		int i = 0;
+		if (auxEvento.getDataInicio().before(auxAtividade.getDataInicio())
+				|| auxEvento.getDataInicio().equals(auxAtividade.getDataInicio())
+				&& auxEvento.getDataFinal().after(auxAtividade.getDataFinal())
+				|| auxEvento.getDataFinal().equals(auxAtividade.getDataFinal())) {
+			
+			this.atividades.add(auxAtividade);
+
+			i = atividades.size();
+		}
+		
+		this.atividades_realizadas = new boolean[i];
+
+		return this.atividades_realizadas.length;
+	}
+	
+	
+	public void arrayAtividadesRealizadas() {
+		Pontuacao pontuacaoAux = new Pontuacao();
+		int i = pontuacaoAux.indiceDoArrayAtividadesRealizadas();
+		this.atividades_realizadas = new boolean[i];
+	}
+
+	
+	public void arrayAtraso() {
+		Pontuacao pontuacaoAux = new Pontuacao();
+		
+		int i = pontuacaoAux.indiceDoArrayAtividadesRealizadas();
+		this.atrasos = new boolean[i];
+	}
+	
+	public int totalPontuacaoPorParticipante() {
+
+		int totalPontos = 0;
+
+		for (boolean presenca : this.marcar_presencas) {
+			if (presenca == true) {
+				totalPontos += 10;
+			}
+		}
+		
+		for (boolean atividade : this.atividades_realizadas) {
+			if(atividade == true) {
+				totalPontos += 5;
+			}
+		}
+		
+		for (boolean atraso : this.atrasos ) {
+			if (atraso == true) {
+				totalPontos -= 2;
+			}
+		}
+
+		return totalPontos;
+		
+	}
+	
 	public Long getId_participante() {
 		return id_participante;
 	}
