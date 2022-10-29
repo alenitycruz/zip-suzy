@@ -45,6 +45,38 @@ public class Grupo implements Serializable {
 	public Integer quantidadeParticipante() {
 		return participantes.size();
 	}
+	
+	public int pontuacaoTotalDoGrupo() {
+		int total = 0;
+		int i = 0;
+		int a = 0;
+		
+		for(Participante participante : participantes) {
+			total += participante.totalPontuacaoPorParticipante();
+		}
+		
+		for(Participante participante : participantes) {
+			if(participante.presencaBonus() == true) {
+				i++;
+			}
+		}
+		
+		if(i == participantes.size()) {
+			total += 5;
+		}
+		
+		for(Participante participante : participantes) {
+			if(participante.atividadeBonus() == true) {
+				a++;
+			}
+		}
+		
+		if(a == participantes.size()) {
+			total += 5;
+		}
+		
+		return total;
+	}
 
 
 	public Long getId_grupo() {

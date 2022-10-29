@@ -71,18 +71,18 @@ public class Pontuacao implements Serializable {
 	//====================================================================
 	
 	
-	
+	//////////////////////////////////////////////////////////////
 		public int indiceDoArrayMarcarPresenca() {
-			Evento auxEvento = new Evento();
+			Evento auxEvento = new Evento();////////////////////////
 
-			int i = (int) auxEvento.totalDiasDoEvento();
+			int i = (int) auxEvento.totalDiasDoEvento();////////////////////////////
 
-			this.marcar_presencas = new boolean[i];
+			this.marcar_presencas = new boolean[i];/////////////////////////
 
-			return this.marcar_presencas.length;
+			return this.marcar_presencas.length;/////////////////////////
 
 		}
-		
+	//////////////////////////////////////////////////////////////	
 		public void arrayMarcarPresenca() {
 			Pontuacao pontuacaoAux = new Pontuacao();
 			

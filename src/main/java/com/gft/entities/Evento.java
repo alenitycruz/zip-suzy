@@ -30,7 +30,7 @@ public class Evento implements Serializable{
     private Date dataInicio;
     
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dataFinal;
+    private Date dataFinal= new Date();
     
     @OneToMany(mappedBy = "eventos")
     private List<Grupo> grupos;
